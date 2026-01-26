@@ -79,3 +79,5 @@ func main() {
 		fmt.Println("Invalid, exit.")
 	}
 }
+
+// vim:foldmethod=marker:
