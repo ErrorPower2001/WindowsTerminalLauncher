@@ -63,7 +63,7 @@ func main() {
 	}
 
 	term.Restore(int(os.Stdin.Fd()), oldState)
-	fmt.Printf("%s\n", string(b))
+	////fmt.Printf("%s\n", string(b))
 
 	choice := int(b[0] - '1')
 	if choice >= 0 && choice < len(names) {
