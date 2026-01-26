@@ -7,6 +7,10 @@ import (
 	"os/exec"
 	"path/filepath"
 
+	// Added to detect OS for clear screen
+	// 用于检测系统以清屏
+	"runtime" 
+
 	"golang.org/x/term"
 )
 
@@ -20,6 +24,21 @@ type WTConfig struct {
 		} `json:"list"`
 	} `json:"profiles"`
 }
+
+// clearScreen cleans the terminal display
+// clearScreen 清除终端屏幕内容
+// {{{
+func clearScreen() {
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/c", "cls")
+	} else {
+		cmd = exec.Command("clear")
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
+// }}}
 
 func main() {
 	// 1. Get config path and read file
@@ -53,111 +72,89 @@ func main() {
 	}
 	// }}}
 
-	// 3. Display Menu
-	// 3. 显示菜单
-	// {{{
-	fmt.Println("=== Windows Terminal Launcher===")
-	for i, name := range names {
-		fmt.Printf("[%d] %s\n", i+1, name)
-	}
-	////fmt.Println("--------------------------------")
-	////fmt.Print("Input a number: ")
-	// }}}
+	// Main Loop Starts Here 
+	// 主循环开始
+	for {
+		////clearScreen()
 
-	// 4. Set Raw Mode and Read Key
-	// 4. 设置原始模式并读取按键
-	// {{{
-	// term.MakeRaw allows reading input without pressing Enter
-	// term.MakeRaw 允许在不按回车的情况下读取输入
-	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
-	if err != nil {
-		panic(err)
-	}
-	// Ensure terminal state is restored on exit
-	// 确保退出时恢复终端状态
-	defer term.Restore(int(os.Stdin.Fd()), oldState)
-
-	// Create a byte slice as a buffer to store 1 byte of input
-	// 创建一个字节切位作为缓冲区，用于存储 1 字节的输入
-	b := make([]byte, 1)
-
-	// Read exactly one byte from the raw terminal
-	// 从原始模式的终端中精确读取一个字节
-	_, err = os.Stdin.Read(b)
-	if err != nil {
-		return
-	}
-
-	// Restore state immediately after reading to allow normal output
-	// 读取后立即恢复状态以允许正常输出
-	term.Restore(int(os.Stdin.Fd()), oldState)
-	////fmt.Printf("%s\n", string(b))
-	// }}}
-
-	// 5. Logic processing
-	// 5. 逻辑处理
-	// {{{
-
-	// Old 5
-	/*
-	// {{{
-	choice := int(b[0] - '1')
-	if choice >= 0 && choice < len(names) {
-		selected := names[choice]
-		////fmt.Printf("Starting: %s...\n", selected)
-		
-		cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
-		err := cmd.Run()
-		if err != nil {
-			fmt.Printf("Faild to execute: %v\n", err)
+		// 3. Display Menu
+		// 3. 显示菜单
+		// {{{
+		fmt.Println("=== Windows Terminal Launcher ===")
+		for i, name := range names {
+			fmt.Printf("[%d] %s\n", i+1, name)
 		}
-	} else {
-		fmt.Println("Invalid, exit.")
-	}
-	// }}}
-	*/
+		fmt.Println("[q] Quit / Exit")
+		fmt.Print("Select a profile: ")
+		// }}}
 
-	var selected string
+		// 4. Set Raw Mode and Read Key
+		// 4. 设置原始模式并读取按键
+		// {{{
+		// term.MakeRaw allows reading input without pressing Enter
+		// term.MakeRaw 允许在不按回车的情况下读取输入 
+		oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+		if err != nil {
+			panic(err)
+		}
 
-	// Handle numeric keys 1-9
-	// 处理数字键 1-9
-	if b[0] >= '1' && b[0] <= '9' {
-		choice := int(b[0] - '1')
-		if choice < len(names) {
-			selected = names[choice]
+		// Create a byte slice as a buffer to store 1 byte of input
+		// 创建一个字节切位作为缓冲区，用于存储 1 字节的输入 
+		b := make([]byte, 1)
+		// Read exactly one byte from the raw terminal
+		// 从原始模式的终端中精确读取一个字节 
+		_, err = os.Stdin.Read(b)
+		if err != nil {
+			break
+		}
+
+		// Restore state immediately to allow clear output for the next loop
+		// 立即恢复状态以便为下一次循环提供正常的输出环境
+		term.Restore(int(os.Stdin.Fd()), oldState)
+		fmt.Printf("%s\n", string(b))
+		// }}}
+
+		// 5. Logic processing
+		// 5. 逻辑处理
+		// {{{
+		var selected string
+
+		// Handle numeric keys 1-9
+		// 处理数字键 1-9
+		if b[0] >= '1' && b[0] <= '9' {
+			choice := int(b[0] - '1')
+			if choice < len(names) {
+				selected = names[choice]
+			} else if len(names) > 0 {
+				selected = names[0]
+			}
+		} else if b[0] == 'q' || b[0] == 3 { // 'q' or Ctrl+C
+			// Exit loop
+			// 退出循环
+			fmt.Println("\nExiting...")
+			break
 		} else {
-			// Fallback to first if out of range
-			// 如果超出范围则回退到第一个
-			selected = names[0]
+			// Default to first profile for any other key
+			// 任意其他键默认启动第一个配置
+			if len(names) > 0 {
+				selected = names[0]
+			}
 		}
-	} else if b[0] == 'q' {
-		// Quit if 'q' is pressed
-		// 如果按下 'q' 则退出
-		return
-	} else {
-		// Default to first profile for any other key
-		// 任意其他键默认启动第一个配置
-		if len(names) > 0 {
-			selected = names[0]
-		}
-	}
+		fmt.Printf("\n\n")
 
-	// Execute Windows Terminal command
-	// 执行 Windows Terminal 命令
-	if selected != "" {
-		// nt (new-tab) opens in the current window if possible
-		// nt (new-tab) 尽可能在当前窗口打开新标签
-		cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
-		err := cmd.Run()
-		if err != nil {
-			fmt.Printf("Faild to execute: %v\n", err)
+		// Execute Windows Terminal command
+		// 执行 Windows Terminal 命令
+		if selected != "" {
+			// Using cmd.Start() so we don't block the loop while waiting for WT
+			// 使用 cmd.Start() 以便在等待 WT 启动时不阻塞循环
+			cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
+			err := cmd.Start()
+			if err != nil {
+				fmt.Printf("\nFaild to execute: %v\n", err)
+			}
 		}
-		////time.Sleep(0.2 * 1000 * 1000 * 1000)
-		////fmt.Printf("Starting profile: %s...\n", selected)
-	} else {
-		fmt.Println("Invalid, exit.")
+		// }}}
 	}
-	// }}}
 }
 
 // vim:foldmethod=marker:
