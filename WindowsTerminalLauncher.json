@@ -1,0 +1,9 @@
+{
+	"version": "1.0.0",
+	"description": "Windows Terminal profile launcher.",
+	"homepage": "https://github.com/ErrorPower2001/WindowsTermnialLauncher",
+	"license": "Unknown",
+	"url": "https://github.com/ErrorPower2001/WindowsTerminalLauncher/releases/download/1.0.0/wtlauncher.exe",
+	"bin": "wtlauncher.exe",
+	"end": "end"
+}
