@@ -65,6 +65,8 @@ func main() {
 	term.Restore(int(os.Stdin.Fd()), oldState)
 	////fmt.Printf("%s\n", string(b))
 
+	// Logic processing
+	// {{{
 	choice := int(b[0] - '1')
 	if choice >= 0 && choice < len(names) {
 		selected := names[choice]
@@ -78,6 +80,7 @@ func main() {
 	} else {
 		fmt.Println("Invalid, exit.")
 	}
+	// }}}
 }
 
 // vim:foldmethod=marker:
