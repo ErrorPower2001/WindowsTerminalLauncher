@@ -71,7 +71,7 @@ func main() {
 		////fmt.Printf("Starting: %s...\n", selected)
 		
 		cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
-		err := cmd.Start()
+		err := cmd.Run()
 		if err != nil {
 			fmt.Printf("Faild to execute: %v\n", err)
 		}
