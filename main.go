@@ -66,6 +66,7 @@ func main() {
 	////fmt.Printf("%s\n", string(b))
 
 	// Logic processing
+	/*
 	// {{{
 	choice := int(b[0] - '1')
 	if choice >= 0 && choice < len(names) {
@@ -77,6 +78,39 @@ func main() {
 		if err != nil {
 			fmt.Printf("Faild to execute: %v\n", err)
 		}
+	} else {
+		fmt.Println("Invalid, exit.")
+	}
+	// }}}
+	*/
+
+	// Logic processing
+	// {{{
+	var selected string
+
+	if b[0] >= '1' && b[0] <= '9' {
+		choice := int(b[0] - '1')
+		if choice < len(names) {
+			selected = names[choice]
+		} else {
+			selected = names[0]
+		}
+	} else if b[0] == 'q' {
+		return
+	} else {
+		if len(names) > 0 {
+			selected = names[0]
+		}
+	}
+
+	if selected != "" {
+		cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
+		err := cmd.Run()
+		if err != nil {
+			fmt.Printf("Faild to execute: %v\n", err)
+		}
+		////time.Sleep(0.2 * 1000 * 1000 * 1000)
+		////fmt.Printf("Starting profile: %s...\n", selected)
 	} else {
 		fmt.Println("Invalid, exit.")
 	}
