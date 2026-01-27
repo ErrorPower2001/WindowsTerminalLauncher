@@ -140,7 +140,6 @@ func main() {
 				selected = names[0]
 			}
 		} */
-		fmt.Printf("\n\n")
 
 		// Execute Windows Terminal command
 		// 执行 Windows Terminal 命令
@@ -163,6 +162,8 @@ func main() {
 				fmt.Printf("\nLaunched [%s] at [%s]", selected, cwd)
 			}
 		}
+
+		fmt.Printf("\n\n")
 		// }}}
 	}
 }
