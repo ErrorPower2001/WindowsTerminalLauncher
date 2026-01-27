@@ -159,6 +159,8 @@ func main() {
 			err = cmd.Start()
 			if err != nil {
 				fmt.Printf("\nFaild to execute: %v\n", err)
+			} else {
+				fmt.Printf("\nLaunched [%s] at [%s]", selected, cwd)
 			}
 		}
 		// }}}
