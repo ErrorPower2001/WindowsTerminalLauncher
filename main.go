@@ -133,13 +133,13 @@ func main() {
 			// 退出循环
 			fmt.Println("\nExiting...")
 			break
-		} else {
+		} /* else {
 			// Default to first profile for any other key
 			// 任意其他键默认启动第一个配置
 			if len(names) > 0 {
 				selected = names[0]
 			}
-		}
+		} */
 		fmt.Printf("\n\n")
 
 		// Execute Windows Terminal command
