@@ -145,10 +145,18 @@ func main() {
 		// Execute Windows Terminal command
 		// 执行 Windows Terminal 命令
 		if selected != "" {
+			// Get current working directory to pass to Windows Terminal
+			// 获取当前工作目录并传递给 Windows Terminal
+			cwd, err := os.Getwd()
+			if err != nil {
+				// Fallback to current if error
+				// 出错时回退至当前点
+				cwd = "."
+			}
 			// Using cmd.Start() so we don't block the loop while waiting for WT
 			// 使用 cmd.Start() 以便在等待 WT 启动时不阻塞循环
-			cmd := exec.Command("wt.exe", "new-tab", "--profile", selected)
-			err := cmd.Start()
+			cmd := exec.Command("wt.exe", "new-tab", "--profile", selected, "--startingDirectory", cwd)
+			err = cmd.Start()
 			if err != nil {
 				fmt.Printf("\nFaild to execute: %v\n", err)
 			}
