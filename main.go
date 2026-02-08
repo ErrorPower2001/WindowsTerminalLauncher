@@ -13,6 +13,8 @@ import (
 	// 用于检测系统以清屏
 	"runtime"
 
+	"flag"
+
 	"golang.org/x/term"
 )
 
@@ -48,6 +50,15 @@ func clearScreen() {
 
 
 func main() {
+	// Argument parsing
+	// 参数解析
+	// {{{
+	// Default wait time is 200ms
+	// 默认等待时间为 200ms
+	waitMs := flag.Int("t", 200, "Wait time in milliseconds for IPC handover")
+	flag.Parse()
+	// }}}
+
 	// Get config path and read file
 	// 获取配置文件路径并读取文件
 	// {{{
@@ -206,7 +217,10 @@ func main() {
 			// 重要：等待 wt.exe 通过 IPC（进程间通信）将指令移交给 Windows Terminal 
 			// 服务进程。如果启动器立即退出，终端服务可能还没来得及处理“新建窗格”请求，
 			// 当前窗格就已经因为进程结束而被销毁了。
-			time.Sleep(200 * time.Millisecond)
+			// Use the parsed or default wait time
+			// 使用解析出的或默认的等待时间
+			time.Sleep(time.Duration(*waitMs) * time.Millisecond)
+			return
 		}
 	}
 	////fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
