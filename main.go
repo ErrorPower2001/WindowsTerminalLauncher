@@ -57,7 +57,13 @@ func main() {
 
 	data, err := os.ReadFile(configPath)
 	if err != nil {
-		fmt.Printf("\x1b[1;31mFaild to read config file: %v\x1b[0m\n", err)
+		////fmt.Printf("\x1b[1;31mFaild to read config file: %v\x1b[0m\n", err)
+		fmt.Print("\x1b[1;31m")
+		fmt.Print("Faild to read config file: ")
+		fmt.Print("\x1b[0m")
+		fmt.Print("\n")
+		fmt.Print(err)
+		fmt.Print("\n")
 		return
 	}
 	// }}}
@@ -68,7 +74,13 @@ func main() {
 	// {{{
 	var config WTConfig
 	if err := json.Unmarshal(data, &config); err != nil {
-		fmt.Printf("\x1b[1;31mFaild to analysis JSON: %v\x1b[0m\n", err)
+		////fmt.Printf("\x1b[1;31mFaild to analysis JSON: %v\x1b[0m\n", err)
+		fmt.Print("\x1b[1;31m")
+		fmt.Print("Faild to analysis JSON: ")
+		fmt.Print("\x1b[0m")
+		fmt.Print("\n")
+		fmt.Print(err)
+		fmt.Print("\n")
 		return
 	}
 
@@ -84,12 +96,21 @@ func main() {
 	// Display Menu
 	// 显示菜单
 	// {{{
-	fmt.Println("\x1b[1;7m=== Windows Terminal Launcher ===\x1b[0m")
+	////fmt.Println("\x1b[1;7m=== Windows Terminal Launcher ===\x1b[0m")
+	fmt.Print("\x1b[1;7m")
+	fmt.Print("=== Windows Terminal Launcher ===")
+	fmt.Print("\x1b[0m")
+	fmt.Print("\n")
+
 	for i, name := range names {
 		fmt.Printf("[%d] %s\n", i+1, name)
 	}
 	fmt.Println("[q] Quit / Exit")
-	fmt.Print("\x1b[1;7mSelect a profile\x1b[0m: ")
+
+	////fmt.Print("\x1b[1;7mSelect a profile\x1b[0m: ")
+	fmt.Print("\x1b[1;7m")
+	fmt.Print("Select a profile")
+	fmt.Print("\x1b[0m: ")
 	// }}}
 
 
@@ -164,9 +185,19 @@ func main() {
 		////cmd := exec.Command("wt.exe", "--window", "0", "split-pane", "horizontal", "--profile", selected, "--startingDirectory", cwd)
 		err = cmd.Start()
 		if err != nil {
-			fmt.Printf("\n\x1b[1;31mFaild to execute: %v\x1b[0m\n", err)
+			////fmt.Printf("\n\x1b[1;31mFaild to execute: %v\x1b[0m\n", err)
+			fmt.Print("\n")
+			fmt.Print("\x1b[1;31m")
+			fmt.Print("Faild to execute: ")
+			fmt.Print("\x1b[0m")
+			fmt.Print(err)
 		} else {
-			fmt.Printf("\n\x1b[1;32mLaunched [%s] at [%s]\x1b[0m\n", selected, cwd)
+			////fmt.Printf("\n\x1b[1;32mLaunched [%s] at [%s]\x1b[0m\n", selected, cwd)
+			fmt.Printf("\n")
+			fmt.Print("\x1b[1;32m")
+			fmt.Printf("Launched [%s] at [%s]", selected, cwd)
+			fmt.Print("\x1b[0m")
+			fmt.Print("\n")
 
 			// Important: Wait for wt.exe to handover the IPC (Inter-Process Communication) 
 			// commands to the main Windows Terminal server process. 
@@ -178,7 +209,14 @@ func main() {
 			time.Sleep(50 * time.Millisecond)
 		}
 	}
-	fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
+	////fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
+	fmt.Print("\x1b[1;33m")
+	fmt.Print("Invalid input. ")
+	fmt.Print("\x1b[0m")
+	fmt.Print("\x1b[1;7m")
+	fmt.Print("Select again")
+	fmt.Print("\x1b[0m")
+	fmt.Print(": ")
 	// }}}
 }
 
