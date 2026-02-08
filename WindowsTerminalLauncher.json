@@ -1,10 +1,10 @@
 {
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"description": "Windows Terminal profile launcher.",
 	"homepage": "https://github.com/ErrorPower2001/WindowsTermnialLauncher",
 	"license": "Unknown",
-	"url": "https://github.com/ErrorPower2001/WindowsTerminalLauncher/releases/download/1.3.0/wtlauncher.exe",
-	"hash": "97ec926d4b560d8e83aaee319690028b9e9dec5b33fe9d346bfcd6baa6758678",
+	"url": "https://github.com/ErrorPower2001/WindowsTerminalLauncher/releases/download/1.3.1/wtlauncher.exe",
+	"hash": "97afd8d0215e570396985a5d754128b4eac6adf9ea3e7ffe237074150ab8da7a",
 	"bin": "wtlauncher.exe",
 	"end": "end"
 }
