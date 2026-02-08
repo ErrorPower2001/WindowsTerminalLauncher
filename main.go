@@ -16,8 +16,10 @@ import (
 	"golang.org/x/term"
 )
 
+
 // WTConfig matches Windows Terminal settings.json structure
 // WTConfig 对应 Windows Terminal 的 settings.json 结构
+// {{{
 type WTConfig struct {
 	Profiles struct {
 		List []struct {
@@ -26,6 +28,8 @@ type WTConfig struct {
 		} `json:"list"`
 	} `json:"profiles"`
 }
+// }}}
+
 
 // clearScreen cleans the terminal display
 // clearScreen 清除终端屏幕内容
@@ -42,9 +46,10 @@ func clearScreen() {
 }
 // }}}
 
+
 func main() {
-	// 1. Get config path and read file
-	// 1. 获取配置文件路径并读取文件
+	// Get config path and read file
+	// 获取配置文件路径并读取文件
 	// {{{
 	configPath := filepath.Join(
 		os.Getenv("LOCALAPPDATA"),
@@ -57,8 +62,9 @@ func main() {
 	}
 	// }}}
 
-	// 2. Parse JSON and filter profiles
-	// 2. 解析 JSON 并过滤配置项
+
+	// Parse JSON and filter profiles
+	// 解析 JSON 并过滤配置项
 	// {{{
 	var config WTConfig
 	if err := json.Unmarshal(data, &config); err != nil {
@@ -74,8 +80,9 @@ func main() {
 	}
 	// }}}
 
-	// 3. Display Menu
-	// 3. 显示菜单
+
+	// Display Menu
+	// 显示菜单
 	// {{{
 	fmt.Println("\x1b[1;7m=== Windows Terminal Launcher ===\x1b[0m")
 	for i, name := range names {
@@ -85,8 +92,9 @@ func main() {
 	fmt.Print("\x1b[1;7mSelect a profile\x1b[0m: ")
 	// }}}
 
-	// 4. Set Raw Mode and Read Key
-	// 4. 设置原始模式并读取按键
+
+	// Set Raw Mode and Read Key
+	// 设置原始模式并读取按键
 	// {{{
 	// term.MakeRaw allows reading input without pressing Enter
 	// term.MakeRaw 允许在不按回车的情况下读取输入 
@@ -110,8 +118,9 @@ func main() {
 	fmt.Printf("%s\n", string(b))
 	// }}}
 
-	// 5. Logic processing
-	// 5. 逻辑处理
+
+	// Logic processing
+	// 逻辑处理
 	// {{{
 	var selected string
 
@@ -136,9 +145,12 @@ func main() {
 			selected = names[0]
 		}
 	} */
+	// }}}
+
 
 	// Execute Windows Terminal command
 	// 执行 Windows Terminal 命令
+	// {{{
 	if selected != "" {
 		// Get current working directory to pass to Windows Terminal
 		// 获取当前工作目录并传递给 Windows Terminal
@@ -169,5 +181,6 @@ func main() {
 	fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
 	// }}}
 }
+
 
 // vim:foldmethod=marker:
