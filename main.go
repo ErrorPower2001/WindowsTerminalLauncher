@@ -206,7 +206,7 @@ func main() {
 			// 重要：等待 wt.exe 通过 IPC（进程间通信）将指令移交给 Windows Terminal 
 			// 服务进程。如果启动器立即退出，终端服务可能还没来得及处理“新建窗格”请求，
 			// 当前窗格就已经因为进程结束而被销毁了。
-			time.Sleep(50 * time.Millisecond)
+			time.Sleep(200 * time.Millisecond)
 		}
 	}
 	////fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
