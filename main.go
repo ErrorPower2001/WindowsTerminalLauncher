@@ -128,6 +128,7 @@ func main() {
 		// Exit loop
 		// 退出循环
 		fmt.Println("\n\x1b[1mExiting...\x1b[0m")
+		return
 	} /* else {
 		// Default to first profile for any other key
 		// 任意其他键默认启动第一个配置
