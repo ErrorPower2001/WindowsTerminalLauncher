@@ -166,6 +166,7 @@ func main() {
 			time.Sleep(50 * time.Millisecond)
 		}
 	}
+	fmt.Print("\x1b[1;33mInvalid input. \x1b[0m\x1b[1;7mSelect again\x1b[0m: ")
 	// }}}
 }
 
